@@ -55,7 +55,8 @@ $.fn.flipster = function(options) {
 
         // public methods
         methods = {
-            jump: jump
+            jump: jump,
+            reCalcFlipItems: reCalcFlipItems
         };
         _flipster.data('methods', methods);
 
@@ -396,6 +397,12 @@ $.fn.flipster = function(options) {
                     _startTouchX = 0;
                 });
             }
+        }
+
+        // Recalculate flip items (after when append new items)
+        function reCalcFlipItems() {
+            _flipItems = _flipItemsOuter.find(settings.itemSelector);
+            _flipItems.not('.flip-item').addClass("flip-item flip-hidden");
         }
 
         // Initialize if flipster is not already active.
