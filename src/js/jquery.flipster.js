@@ -166,6 +166,13 @@ $.fn.flipster = function(options) {
         }
 
         function center() {
+            var _currentItem = $(_flipItems[_current]);
+            var isCurrent = _currentItem.hasClass('flip-current');
+            if (isCurrent) {
+                return;
+            }
+            var currentItem = _currentItem.addClass("flip-current");
+            isCurrent = currentItem.hasClass('flip-current');
             var currentItem = $(_flipItems[_current]).addClass("flip-current");
             
             _flipItems.removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
@@ -333,10 +340,7 @@ $.fn.flipster = function(options) {
             });
 
             // Navigate directly to an item by clicking
-            _flipItems.on("click", function(e) {
-                if ( !$(this).hasClass("flip-current") ) { e.preventDefault(); }
-                jump(_flipItems.index(this));
-            });
+            addClickFlipItems(_flipItems);
 
             // Keyboard Navigation
             if (settings.enableKeyboard && _flipItems.length > 1) {
@@ -398,11 +402,20 @@ $.fn.flipster = function(options) {
                 });
             }
         }
+        // Add click for flip items
+        function addClickFlipItems (_flipItems) {
+            _flipItems.on("click.flipster", function(e) {
+                if ( !$(this).hasClass("flip-current") ) { e.preventDefault(); }
+                jump(_flipItems.index(this));
+            });
+        }
 
-        // Recalculate flip items (after when append new items)
+        // Recalculate flip items (when append new items)
         function reCalcFlipItems() {
+            _flipItems.off("click.flipster");
             _flipItems = _flipItemsOuter.find(settings.itemSelector);
             _flipItems.not('.flip-item').addClass("flip-item flip-hidden");
+            addClickFlipItems(_flipItems);
         }
 
         // Initialize if flipster is not already active.
