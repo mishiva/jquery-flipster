@@ -414,7 +414,7 @@ $.fn.flipster = function(options) {
         function reCalcFlipItems() {
             _flipItems.off("click.flipster");
             _flipItems = _flipItemsOuter.find(settings.itemSelector);
-            _flipItems.not('.flip-item').addClass("flip-item flip-hidden");
+            _flipItems.not('.flip-item').addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
             addClickFlipItems(_flipItems);
         }
 
